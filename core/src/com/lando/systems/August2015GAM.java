@@ -14,6 +14,7 @@ import com.lando.systems.accessors.ColorAccessor;
 import com.lando.systems.accessors.RectangleAccessor;
 import com.lando.systems.accessors.Vector2Accessor;
 import com.lando.systems.accessors.Vector3Accessor;
+import com.lando.systems.screens.LevelEditorScreen;
 import com.lando.systems.screens.PrototypeScreen;
 import com.lando.systems.utils.Assets;
 
@@ -36,7 +37,8 @@ public class August2015GAM extends Game {
 			Tween.registerAccessor(Vector3.class, new Vector3Accessor());
 		}
 
-		setScreen(new PrototypeScreen(this));
+//		setScreen(new PrototypeScreen(this));
+		setScreen(new LevelEditorScreen(this));
 	}
 
 	@Override
