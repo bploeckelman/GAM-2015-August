@@ -37,6 +37,7 @@ public class GAMScreen extends ScreenAdapter {
             Gdx.app.exit();
         }
         camera.update();
+        updateMouseVectors(camera);
     }
 
     // ------------------------------------------------------------------------
