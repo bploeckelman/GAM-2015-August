@@ -9,14 +9,14 @@ import com.lando.systems.August2015GAM;
 import com.lando.systems.utils.Assets;
 
 /**
- * Brian Ploeckelman created on 8/8/2015.
+ * Brian Ploeckelman created on 8/9/2015.
  */
-public class PrototypeScreen extends GAMScreen {
+public class LevelEditorScreen extends GAMScreen {
 
     FrameBuffer   sceneFrameBuffer;
     TextureRegion sceneRegion;
 
-    public PrototypeScreen(August2015GAM game) {
+    public LevelEditorScreen(August2015GAM game) {
         super(game);
 
         sceneFrameBuffer = new FrameBuffer(Format.RGBA8888, August2015GAM.win_width, August2015GAM.win_height, false);
