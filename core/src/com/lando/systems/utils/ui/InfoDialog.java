@@ -2,6 +2,7 @@ package com.lando.systems.utils.ui;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -32,17 +33,22 @@ public class InfoDialog extends Dialog {
     protected void initButton() {
         final TextButton okButton = new TextButton("Ok", this.getSkin());
         okButton.addListener(new InputListener() {
-             @Override
-             public void touchUp (InputEvent event,float x, float y, int pointer, int button){
-                 InfoDialog.this.hide();
-             }
-         });
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                InfoDialog.this.hide();
+            }
+        });
         this.button(okButton);
     }
 
     public void resetText(String text) {
         this.getContentTable().clear();
         this.text(text);
+    }
+
+    public void resetText(String text, Stage stage) {
+        resetText(text);
+        this.show(stage);
     }
 
 }

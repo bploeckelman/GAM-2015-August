@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.lando.systems.August2015GAM;
 import com.lando.systems.utils.OrthoCamController;
+import com.lando.systems.utils.ui.editor.NewLevelDialog;
 import com.lando.systems.world.Level;
 import com.lando.systems.utils.ui.ButtonInputListenerAdapter;
 import com.lando.systems.utils.ui.InfoDialog;
@@ -21,9 +22,6 @@ import com.lando.systems.utils.ui.InfoDialog;
  * Brian Ploeckelman created on 8/9/2015.
  */
 public class LevelEditorScreen extends GAMScreen {
-
-    private static final int MAX_WIDTH = 20;
-    private static final int MAX_HEIGHT = 20;
 
     FrameBuffer   sceneFrameBuffer;
     TextureRegion sceneRegion;
@@ -102,6 +100,14 @@ public class LevelEditorScreen extends GAMScreen {
         stage.dispose();
     }
 
+    public InfoDialog getInfoDialog() {
+        return infoDialog;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
     // ------------------------------------------------------------------------
     // Private Implementation
     // ------------------------------------------------------------------------
@@ -129,65 +135,19 @@ public class LevelEditorScreen extends GAMScreen {
         newLevelBtn.addListener(new ButtonInputListenerAdapter() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                final Dialog dlg = new Dialog("New Level", skin);
-
-                final TextField widthField = new TextField("", skin);
-                final TextField heightField = new TextArea("", skin);
-                final TextButton okButton = new TextButton("Ok", skin);
-                final TextButton cancelButton = new TextButton("Cancel", skin);
-
-                okButton.addListener(new ButtonInputListenerAdapter() {
-                    @Override
-                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                        String widthStr  = widthField.getText();
-                        String heightStr = heightField.getText();
-                        try {
-                            int width  = Integer.parseInt(widthStr);
-                            int height = Integer.parseInt(heightStr);
-                            if (width < 0 || height < 0) throw new NumberFormatException();
-                            if (width > MAX_WIDTH || height > MAX_HEIGHT) throw new NumberFormatException();
-
-                            newLevel(width, height);
-                            dlg.hide();
-                        } catch (NumberFormatException e) {
-                            widthField.clear();
-                            heightField.clear();
-                            infoDialog.resetText("Invalid value for width or height.\n"
-                                                 + "Must be integers > 0 and < " + MAX_WIDTH + "x" + MAX_HEIGHT);
-                            infoDialog.show(stage);
-                        }
-                    }
-                });
-                cancelButton.addListener(new ButtonInputListenerAdapter() {
-                    @Override
-                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                        dlg.hide();
-                    }
-                });
-
-                dlg.getContentTable().add("Width");
-                dlg.getContentTable().add(widthField);
-                dlg.getContentTable().row();
-                dlg.getContentTable().add("Height");
-                dlg.getContentTable().add(heightField);
-                dlg.getContentTable().row();
-                dlg.button(okButton);
-                dlg.button(cancelButton);
-                dlg.show(stage);
+                new NewLevelDialog("New Level", skin, LevelEditorScreen.this).show(stage);
             }
         });
         saveLevelBtn.addListener(new ButtonInputListenerAdapter() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                infoDialog.resetText("Not yet implemented");
-                infoDialog.show(stage);
+                infoDialog.resetText("Not yet implemented", stage);
             }
         });
         loadLevelBtn.addListener(new ButtonInputListenerAdapter() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                infoDialog.resetText("Not yet implemented");
-                infoDialog.show(stage);
+                infoDialog.resetText("Not yet implemented", stage);
             }
         });
 
@@ -202,7 +162,7 @@ public class LevelEditorScreen extends GAMScreen {
         stage.addActor(window);
     }
 
-    private void newLevel(int width, int height) {
+    public void newLevel(int width, int height) {
         infoDialog.resetText("Instantiated new level of size: " + width + "x" + height);
         infoDialog.show(stage);
         level = new Level(width, height);
