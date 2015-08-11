@@ -9,15 +9,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.lando.systems.August2015GAM;
 import com.lando.systems.utils.OrthoCamController;
+import com.lando.systems.utils.ui.ButtonInputListenerAdapter;
+import com.lando.systems.utils.ui.InfoDialog;
+import com.lando.systems.utils.ui.editor.LoadLevelDialog;
 import com.lando.systems.utils.ui.editor.NewLevelDialog;
 import com.lando.systems.utils.ui.editor.SaveLevelDialog;
 import com.lando.systems.world.Level;
-import com.lando.systems.utils.ui.ButtonInputListenerAdapter;
-import com.lando.systems.utils.ui.InfoDialog;
 
 /**
  * Brian Ploeckelman created on 8/9/2015.
@@ -113,6 +116,10 @@ public class LevelEditorScreen extends GAMScreen {
         return level;
     }
 
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
     // ------------------------------------------------------------------------
     // Private Implementation
     // ------------------------------------------------------------------------
@@ -152,7 +159,7 @@ public class LevelEditorScreen extends GAMScreen {
         loadLevelBtn.addListener(new ButtonInputListenerAdapter() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                infoDialog.resetText("Not yet implemented", stage);
+                new LoadLevelDialog("Load Level", skin, LevelEditorScreen.this).show(stage);
             }
         });
 

@@ -18,6 +18,9 @@ public class Level {
     int numCells;
     int[] cells;
 
+    // Json reader requires no-arg ctor
+    public Level() {}
+
     public Level(int width, int height) {
         this.width = width;
         this.height = height;
