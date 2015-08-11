@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.lando.systems.August2015GAM;
 import com.lando.systems.utils.OrthoCamController;
 import com.lando.systems.utils.ui.editor.NewLevelDialog;
+import com.lando.systems.utils.ui.editor.SaveLevelDialog;
 import com.lando.systems.world.Level;
 import com.lando.systems.utils.ui.ButtonInputListenerAdapter;
 import com.lando.systems.utils.ui.InfoDialog;
@@ -108,6 +109,10 @@ public class LevelEditorScreen extends GAMScreen {
         return stage;
     }
 
+    public Level getLevel() {
+        return level;
+    }
+
     // ------------------------------------------------------------------------
     // Private Implementation
     // ------------------------------------------------------------------------
@@ -141,7 +146,7 @@ public class LevelEditorScreen extends GAMScreen {
         saveLevelBtn.addListener(new ButtonInputListenerAdapter() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                infoDialog.resetText("Not yet implemented", stage);
+                new SaveLevelDialog("Save Level", skin, LevelEditorScreen.this).show(stage);
             }
         });
         loadLevelBtn.addListener(new ButtonInputListenerAdapter() {
