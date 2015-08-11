@@ -3,6 +3,7 @@ package com.lando.systems.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -11,7 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.lando.systems.August2015GAM;
-import com.lando.systems.stages.Level;
+import com.lando.systems.utils.OrthoCamController;
+import com.lando.systems.world.Level;
 import com.lando.systems.utils.ui.ButtonInputListenerAdapter;
 import com.lando.systems.utils.ui.InfoDialog;
 
@@ -29,6 +31,7 @@ public class LevelEditorScreen extends GAMScreen {
     Stage         stage;
     Window        window;
     InfoDialog    infoDialog;
+    OrthographicCamera uiCamera;
     Level         level;
 
     public LevelEditorScreen(August2015GAM game) {
@@ -58,6 +61,7 @@ public class LevelEditorScreen extends GAMScreen {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             batch.begin();
+            batch.setProjectionMatrix(camera.combined);
             if (level != null) {
                 level.render(batch);
             }
@@ -73,7 +77,7 @@ public class LevelEditorScreen extends GAMScreen {
         {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-            batch.setProjectionMatrix(camera.combined);
+            batch.setProjectionMatrix(uiCamera.combined);
             batch.draw(sceneRegion, 0, 0);
         }
         batch.end();
@@ -83,6 +87,7 @@ public class LevelEditorScreen extends GAMScreen {
     protected void enableInput() {
         final InputMultiplexer mux = new InputMultiplexer();
         mux.addProcessor(stage);
+        mux.addProcessor(new OrthoCamController(camera));
         Gdx.input.setInputProcessor(mux);
     }
 
@@ -102,7 +107,10 @@ public class LevelEditorScreen extends GAMScreen {
     // ------------------------------------------------------------------------
 
     private void initializeUserInterface() {
+        uiCamera = new OrthographicCamera();
+        uiCamera.setToOrtho(false, August2015GAM.win_width, August2015GAM.win_height);
         stage = new Stage(new ScreenViewport());
+        stage.getViewport().setCamera(uiCamera);
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         window = new Window("LevelEd", skin);

@@ -1,4 +1,4 @@
-package com.lando.systems.stages;
+package com.lando.systems.world;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.lando.systems.utils.Assets;
