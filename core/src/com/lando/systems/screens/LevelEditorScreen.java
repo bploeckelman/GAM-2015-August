@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.lando.systems.August2015GAM;
-import com.lando.systems.utils.Assets;
+import com.lando.systems.stages.Level;
 import com.lando.systems.utils.ui.ButtonInputListenerAdapter;
 import com.lando.systems.utils.ui.InfoDialog;
 
@@ -29,6 +29,7 @@ public class LevelEditorScreen extends GAMScreen {
     Stage         stage;
     Window        window;
     InfoDialog    infoDialog;
+    Level         level;
 
     public LevelEditorScreen(August2015GAM game) {
         super(game);
@@ -57,7 +58,9 @@ public class LevelEditorScreen extends GAMScreen {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             batch.begin();
-            batch.draw(Assets.testTexture, 0, 0);
+            if (level != null) {
+                level.render(batch);
+            }
             batch.end();
 
             stage.draw();
@@ -72,8 +75,8 @@ public class LevelEditorScreen extends GAMScreen {
 
             batch.setProjectionMatrix(camera.combined);
             batch.draw(sceneRegion, 0, 0);
-            batch.end();
         }
+        batch.end();
     }
 
     @Override
@@ -192,9 +195,9 @@ public class LevelEditorScreen extends GAMScreen {
     }
 
     private void newLevel(int width, int height) {
-        infoDialog.resetText("Instantiating new level of size: " + width + "x" + height);
+        infoDialog.resetText("Instantiated new level of size: " + width + "x" + height);
         infoDialog.show(stage);
-        // TODO: instantiate the level
+        level = new Level(width, height);
     }
 
 }
