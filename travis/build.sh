@@ -20,4 +20,6 @@ fi
 # Add the Android SDK tools to the PATH.
 export PATH="${PATH}:${ANDROID_HOME}/tools"
 
-./gradlew desktop:dist html:dist
+# NOTE: level editor uses FileHandle methods that aren't implemented in GWT, so HTML build won't work
+#./gradlew desktop:dist html:dist
+./gradlew desktop:dist
