@@ -50,6 +50,15 @@ public class LevelEditorScreen extends GAMScreen {
     @Override
     public void update(float delta) {
         super.update(delta);
+
+        // TODO: write a real input processor so ui touches are ignored
+        // TODO: create a set of tile types and set cell values based on currently selected tile type in ui
+        if (level != null && Gdx.input.justTouched()) {
+            int x = (int) (mouseWorldPos.x / Level.CELL_WIDTH);
+            int y = (int) (mouseWorldPos.y / Level.CELL_HEIGHT);
+            level.setCellAt(x, y, 1);
+        }
+
         stage.act(delta);
     }
 

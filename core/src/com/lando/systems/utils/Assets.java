@@ -22,6 +22,7 @@ public class Assets {
     public static BitmapFont  font;
 
     public static Texture testTexture;
+    public static Texture tempTexture;
 
     public static void load() {
         batch = new SpriteBatch();
@@ -31,6 +32,7 @@ public class Assets {
         font.getData().markupEnabled = true;
 
         testTexture = new Texture("badlogic.jpg");
+        tempTexture = new Texture("temp.png");
     }
 
     public static void dispose() {
@@ -38,6 +40,7 @@ public class Assets {
         modelBatch.dispose();
         font.dispose();
         testTexture.dispose();
+        tempTexture.dispose();
     }
 
     private static ShaderProgram compileShaderProgram(FileHandle vertSource, FileHandle fragSource) {
