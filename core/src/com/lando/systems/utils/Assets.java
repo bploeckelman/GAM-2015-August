@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -23,6 +24,12 @@ public class Assets {
 
     public static Texture testTexture;
     public static Texture tempTexture;
+    public static Texture spritesheetTexture;
+
+    public static TextureRegion blankRegion;
+    public static TextureRegion spawnRegion;
+    public static TextureRegion wallRegion;
+    public static TextureRegion exitRegion;
 
     public static void load() {
         batch = new SpriteBatch();
@@ -33,6 +40,13 @@ public class Assets {
 
         testTexture = new Texture("badlogic.jpg");
         tempTexture = new Texture("temp.png");
+        spritesheetTexture = new Texture("spritesheet.png");
+
+        TextureRegion[][] regions = TextureRegion.split(spritesheetTexture, 32, 32);
+        blankRegion = new TextureRegion(tempTexture);
+        spawnRegion = regions[0][0];
+        wallRegion = regions[0][1];
+        exitRegion = regions[0][2];
     }
 
     public static void dispose() {
@@ -41,6 +55,7 @@ public class Assets {
         font.dispose();
         testTexture.dispose();
         tempTexture.dispose();
+        spritesheetTexture.dispose();
     }
 
     private static ShaderProgram compileShaderProgram(FileHandle vertSource, FileHandle fragSource) {

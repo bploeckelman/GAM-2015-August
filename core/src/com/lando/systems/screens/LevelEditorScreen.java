@@ -7,11 +7,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.lando.systems.August2015GAM;
 import com.lando.systems.utils.LevelEditorController;
@@ -21,6 +24,7 @@ import com.lando.systems.utils.ui.InfoDialog;
 import com.lando.systems.utils.ui.editor.LoadLevelDialog;
 import com.lando.systems.utils.ui.editor.NewLevelDialog;
 import com.lando.systems.utils.ui.editor.SaveLevelDialog;
+import com.lando.systems.world.Entity;
 import com.lando.systems.world.Level;
 
 /**
@@ -28,14 +32,15 @@ import com.lando.systems.world.Level;
  */
 public class LevelEditorScreen extends GAMScreen {
 
-    FrameBuffer   sceneFrameBuffer;
-    TextureRegion sceneRegion;
-    Skin          skin;
-    Stage         stage;
-    Window        window;
-    InfoDialog    infoDialog;
+    FrameBuffer        sceneFrameBuffer;
+    TextureRegion      sceneRegion;
+    Skin               skin;
+    Stage              stage;
+    Window             window;
+    InfoDialog         infoDialog;
     OrthographicCamera uiCamera;
-    Level         level;
+    Level              level;
+    Entity.Type        selectedEntityType;
 
     public LevelEditorScreen(August2015GAM game) {
         super(game);
@@ -122,6 +127,10 @@ public class LevelEditorScreen extends GAMScreen {
         this.level = level;
     }
 
+    public Entity.Type getSelectedEntityType() {
+        return selectedEntityType;
+    }
+
     // ------------------------------------------------------------------------
     // Private Implementation
     // ------------------------------------------------------------------------
@@ -165,10 +174,24 @@ public class LevelEditorScreen extends GAMScreen {
             }
         });
 
-        window.top().add("Level:").padRight(5f);
-        window.top().add(newLevelBtn);
-        window.top().add(saveLevelBtn);
-        window.top().add(loadLevelBtn);
+        final SelectBox<Entity.Type> entityTypeSelect = new SelectBox<Entity.Type>(skin);
+        entityTypeSelect.setItems(Entity.Type.values());
+        entityTypeSelect.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                selectedEntityType = entityTypeSelect.getSelected();
+            }
+        });
+        entityTypeSelect.setSelected(Entity.Type.BLANK);
+        selectedEntityType = Entity.Type.BLANK;
+
+        window.top().left().add("Entity Type").padRight(15f);
+        window.top().left().add(entityTypeSelect).width(100f);//.padRight(50f);
+        window.top().left().add().expandX();
+        window.top().right().add("Level:").padRight(15f);
+        window.top().right().add(newLevelBtn);
+        window.top().right().add(saveLevelBtn);
+        window.top().right().add(loadLevelBtn);
         window.row();
         final float titleHeight = window.getTitleLabel().getHeight();
         window.padTop(titleHeight);

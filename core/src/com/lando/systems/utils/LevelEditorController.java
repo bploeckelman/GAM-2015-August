@@ -18,8 +18,7 @@ public class LevelEditorController extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (levelEditorScreen.getLevel() != null && button == 0) {
-            // TODO: create a set of tile types and set cell values based on currently selected tile type in ui
-            int cellValue = 1;
+            int cellValue = levelEditorScreen.getSelectedEntityType().getValue();
             float wx = levelEditorScreen.getMouseWorldPos().x;
             float wy = levelEditorScreen.getMouseWorldPos().y;
             int x = (int) (wx / Level.CELL_WIDTH);
