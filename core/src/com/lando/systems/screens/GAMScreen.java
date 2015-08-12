@@ -61,6 +61,14 @@ public class GAMScreen extends ScreenAdapter {
         enableInput();
     }
 
+    public Vector3 getMouseWorldPos() {
+        return mouseWorldPos;
+    }
+
+    public Vector3 getMouseScreenPos() {
+        return mouseScreenPos;
+    }
+
     // ------------------------------------------------------------------------
     // Protected Implementation
     // ------------------------------------------------------------------------
