@@ -31,17 +31,15 @@ public class Level {
     }
 
     public int getCellAt(int x, int y) {
-        int index = y * width + x;
-        if (index >= 0 && index < cells.length) {
-            return cells[index];
+        if (x >= 0 && x < width & y >= 0 && y < height) {
+            return cells[y * width + x];
         }
         return -1;
     }
 
     public void setCellAt(int x, int y, int value) {
-        int index = y * width + x;
-        if (index >= 0 && index < cells.length) {
-            cells[index] = value;
+        if (x >= 0 && x < width & y >= 0 && y < height) {
+            cells[y * width + x] = value;
         }
     }
 
