@@ -198,10 +198,25 @@ public class LevelEditorScreen extends GAMScreen {
         removalModeCheckBox.setChecked(false);
         removalMode = false;
 
+        TextButton playButton = new TextButton("Play!", skin);
+        playButton.addListener(new ButtonInputListenerAdapter() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (level == null) {
+                    infoDialog.resetText("Can't play without a level, silly!", stage);
+                    return;
+                }
+
+                PrototypeScreen gameScreen = new PrototypeScreen(game);
+                gameScreen.setLevel(level);
+                game.setScreen(gameScreen);
+            }
+        });
+
         window.top().left().add("Entity Type").padRight(15f);
         window.top().left().add(entityTypeSelect).width(100f).padRight(15f);
-        window.top().left().add(removalModeCheckBox);
-        window.top().left().add().expandX();
+        window.top().left().add(removalModeCheckBox).padRight(15f);
+        window.top().left().add(playButton).padRight(15f).fillX().expandX();
         window.top().right().add("Level:").padRight(15f);
         window.top().right().add(newLevelBtn);
         window.top().right().add(saveLevelBtn);
