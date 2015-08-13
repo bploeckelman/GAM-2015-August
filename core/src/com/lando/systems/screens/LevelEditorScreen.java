@@ -9,11 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.lando.systems.August2015GAM;
@@ -41,6 +39,7 @@ public class LevelEditorScreen extends GAMScreen {
     OrthographicCamera uiCamera;
     Level              level;
     Entity.Type        selectedEntityType;
+    boolean            removalMode;
 
     public LevelEditorScreen(August2015GAM game) {
         super(game);
@@ -131,6 +130,10 @@ public class LevelEditorScreen extends GAMScreen {
         return selectedEntityType;
     }
 
+    public boolean isRemovalMode() {
+        return removalMode;
+    }
+
     // ------------------------------------------------------------------------
     // Private Implementation
     // ------------------------------------------------------------------------
@@ -185,8 +188,19 @@ public class LevelEditorScreen extends GAMScreen {
         entityTypeSelect.setSelected(Entity.Type.BLANK);
         selectedEntityType = Entity.Type.BLANK;
 
+        final CheckBox removalModeCheckBox = new CheckBox("Remove", skin);
+        removalModeCheckBox.addListener(new ButtonInputListenerAdapter() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                removalMode = removalModeCheckBox.isChecked();
+            }
+        });
+        removalModeCheckBox.setChecked(false);
+        removalMode = false;
+
         window.top().left().add("Entity Type").padRight(15f);
-        window.top().left().add(entityTypeSelect).width(100f);//.padRight(50f);
+        window.top().left().add(entityTypeSelect).width(100f).padRight(15f);
+        window.top().left().add(removalModeCheckBox);
         window.top().left().add().expandX();
         window.top().right().add("Level:").padRight(15f);
         window.top().right().add(newLevelBtn);

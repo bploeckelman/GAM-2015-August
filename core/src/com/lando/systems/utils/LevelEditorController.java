@@ -2,6 +2,7 @@ package com.lando.systems.utils;
 
 import com.badlogic.gdx.InputAdapter;
 import com.lando.systems.screens.LevelEditorScreen;
+import com.lando.systems.world.Entity;
 import com.lando.systems.world.Level;
 
 /**
@@ -23,7 +24,11 @@ public class LevelEditorController extends InputAdapter {
             float wy = levelEditorScreen.getMouseWorldPos().y;
             int x = (int) (wx / Level.CELL_WIDTH);
             int y = (int) (wy / Level.CELL_HEIGHT);
-            levelEditorScreen.getLevel().setCellAt(x, y, cellValue);
+            if (levelEditorScreen.isRemovalMode()) {
+                levelEditorScreen.getLevel().setCellAt(x, y, Entity.Type.BLANK.getValue());
+            } else {
+                levelEditorScreen.getLevel().setCellAt(x, y, cellValue);
+            }
             return true;
         }
 
