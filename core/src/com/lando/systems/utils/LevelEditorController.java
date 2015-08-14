@@ -68,6 +68,10 @@ public class LevelEditorController extends InputAdapter {
         if (levelEditorScreen.isRemovalMode()) {
             levelEditorScreen.getLevel().setCellAt(cellX, cellY, Entity.Type.BLANK.getValue());
         } else {
+            final Level level = levelEditorScreen.getLevel();
+            if (cellValue == Entity.Type.SPAWN.getValue() && level.hasSpawn()) {
+                level.setCellAt(level.getSpawnCellIndex(), Entity.Type.BLANK.getValue());
+            }
             levelEditorScreen.getLevel().setCellAt(cellX, cellY, cellValue);
         }
         lastCellClickedX = cellX;
