@@ -177,17 +177,6 @@ public class LevelEditorScreen extends GAMScreen {
             }
         });
 
-        final SelectBox<Entity.Type> entityTypeSelect = new SelectBox<Entity.Type>(skin);
-        entityTypeSelect.setItems(Entity.Type.values());
-        entityTypeSelect.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                selectedEntityType = entityTypeSelect.getSelected();
-            }
-        });
-        entityTypeSelect.setSelected(Entity.Type.BLANK);
-        selectedEntityType = Entity.Type.BLANK;
-
         final CheckBox removalModeCheckBox = new CheckBox("Remove", skin);
         removalModeCheckBox.addListener(new ButtonInputListenerAdapter() {
             @Override
@@ -197,6 +186,19 @@ public class LevelEditorScreen extends GAMScreen {
         });
         removalModeCheckBox.setChecked(false);
         removalMode = false;
+
+        final SelectBox<Entity.Type> entityTypeSelect = new SelectBox<Entity.Type>(skin);
+        entityTypeSelect.setItems(Entity.Type.values());
+        entityTypeSelect.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                selectedEntityType = entityTypeSelect.getSelected();
+                removalModeCheckBox.setChecked(false);
+                removalMode = false;
+            }
+        });
+        entityTypeSelect.setSelected(Entity.Type.BLANK);
+        selectedEntityType = Entity.Type.BLANK;
 
         TextButton playButton = new TextButton("Play!", skin);
         playButton.addListener(new ButtonInputListenerAdapter() {
