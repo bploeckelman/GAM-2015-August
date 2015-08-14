@@ -11,24 +11,24 @@ import com.lando.systems.world.Level;
 public class LevelEditorController extends InputAdapter {
 
     private final LevelEditorScreen levelEditorScreen;
+    private boolean leftButtonDown;
+    private int lastCellClickedX;
+    private int lastCellClickedY;
 
     public LevelEditorController(LevelEditorScreen levelEditorScreen) {
         this.levelEditorScreen = levelEditorScreen;
+        leftButtonDown = false;
+        lastCellClickedX = -1;
+        lastCellClickedY = -1;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (levelEditorScreen.getLevel() != null && button == 0) {
-            int cellValue = levelEditorScreen.getSelectedEntityType().getValue();
-            float wx = levelEditorScreen.getMouseWorldPos().x;
-            float wy = levelEditorScreen.getMouseWorldPos().y;
-            int x = (int) (wx / Level.CELL_WIDTH);
-            int y = (int) (wy / Level.CELL_HEIGHT);
-            if (levelEditorScreen.isRemovalMode()) {
-                levelEditorScreen.getLevel().setCellAt(x, y, Entity.Type.BLANK.getValue());
-            } else {
-                levelEditorScreen.getLevel().setCellAt(x, y, cellValue);
-            }
+            leftButtonDown = true;
+            int cellX = (int) (levelEditorScreen.getMouseWorldPos().x / Level.CELL_WIDTH);
+            int cellY = (int) (levelEditorScreen.getMouseWorldPos().y / Level.CELL_HEIGHT);
+            updateLevelWithClickAt(cellX, cellY);
             return true;
         }
 
@@ -37,13 +37,41 @@ public class LevelEditorController extends InputAdapter {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (leftButtonDown && button == 0) {
+            leftButtonDown = false;
+            lastCellClickedX = -1;
+            lastCellClickedY = -1;
+            return true;
+        }
         return super.touchUp(screenX, screenY, pointer, button);
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        // TODO: handle drag event for 'painting' cells of the level
+        if (leftButtonDown) {
+            int cellX = (int) (levelEditorScreen.getMouseWorldPos().x / Level.CELL_WIDTH);
+            int cellY = (int) (levelEditorScreen.getMouseWorldPos().y / Level.CELL_HEIGHT);
+            if (cellX != lastCellClickedX || cellY != lastCellClickedY) {
+                updateLevelWithClickAt(cellX, cellY);
+            }
+            return true;
+        }
         return super.touchDragged(screenX, screenY, pointer);
+    }
+
+    // ------------------------------------------------------------------------
+    // Private Implementation
+    // ------------------------------------------------------------------------
+
+    private void updateLevelWithClickAt(int cellX, int cellY) {
+        int cellValue = levelEditorScreen.getSelectedEntityType().getValue();
+        if (levelEditorScreen.isRemovalMode()) {
+            levelEditorScreen.getLevel().setCellAt(cellX, cellY, Entity.Type.BLANK.getValue());
+        } else {
+            levelEditorScreen.getLevel().setCellAt(cellX, cellY, cellValue);
+        }
+        lastCellClickedX = cellX;
+        lastCellClickedY = cellY;
     }
 
 }
